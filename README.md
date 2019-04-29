@@ -5,4 +5,4 @@ If the directory does not have a folder named 'Games' in it, it will be created 
 To change this, open the Allstarfooty.py file and change the 2nd line to read:
 	directory = r'yourfoldereaddresshere'
 
-To use the program, follow the prompts, or contact Qqqwxs on GitHub for help. 
+To use the program, follow the prompts, or contact GeorgeTownsendd on GitHub for help. 
