@@ -2,7 +2,6 @@ import pandas as pd
 import os
 from prettytable import PrettyTable
 import re
-import unicodedata
 
 GROUP_ONE = ['Hull Kingston Redskins', 'Sydney Oilers', 'Perth Panthers', 'Glasgow Reapers', 'Merseyside Dockers', 'Brisbane Raiders', 'Darwin Dragons', 'Auckland Orcas', 'Adelaide Attitude', 'Gold Coast Crusade']
 GROUP_TWO = ['Trafford Metro', 'Kensington Highrollers', 'Partick Pirates', 'Surfers Paradise Punks', 'Mandurah Maples', 'Byron Brewers', 'South Lancs Saints', 'Sunshine Coast Fury', 'Balmain Storm', 'Alice Springs Dingoes']
@@ -24,7 +23,7 @@ def load_data(cur_rd_dir='data/', group=None, season_data=True):
     for t in os.listdir(cur_rd_dir):
         add_team = False
         if ' form ' in t:
-            if isinstance(group, type(None)):
+            if not isinstance(group, type(None)):
                 for team_name in group:
                     if team_name in t:
                         add_team = True
@@ -87,8 +86,8 @@ def save_stats_text(teams, stats, n=20, save_title='', title_add='', season_data
         f.write(stat_text)
 
 
-def load_games(dir, group):
-    folder_games = [game for game in os.listdir(dir) if re.match('[a-zA-Z ]+ v [a-zA-Z ]+.txt', game)]
+def load_games(rd_dir, group):
+    folder_games = [game for game in os.listdir(rd_dir) if re.match('[a-zA-Z ]+ v [a-zA-Z ]+.txt', game)]
     group_games = []
     for game in folder_games:
         team1, team2 = game[:-4].split(' v ')
@@ -96,6 +95,7 @@ def load_games(dir, group):
             group_games.append(game)
 
     return group_games
+
 
 def previous_rounds(cur_rd_dir):
     cur_rd_dir = cur_rd_dir.replace('/', '')
