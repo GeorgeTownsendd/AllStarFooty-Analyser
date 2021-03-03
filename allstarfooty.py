@@ -55,6 +55,9 @@ def generate_stat_text(form_data, stat, n=20, order_type='largest', return_text=
         order_type = 'smallest'
         stat = stat[1:]
 
+    if stat in ['Minor Injuries', 'Moderate Injuries', 'Major Injuries']:
+        stat = 'Injuries'
+
     if order_type == 'largest':
         stat_data = form_data.nlargest(n, [stat])
     elif order_type == 'smallest':
@@ -115,6 +118,8 @@ def stats_from_game(rd_dir, game, form_df):
         game_data = ''.join(f.readlines())
 
     for title in GAME_DATA_COLUMNS.keys():
+        if title in ['Minor Injuries', 'Moderate Injuries', 'Major Injuries']:
+            title = 'Injuries'
         if title not in list(form_df.columns):
             form_df[title] = 0
 
@@ -126,6 +131,10 @@ def stats_from_game(rd_dir, game, form_df):
                 player = player[:-1]
             else:
                 player = player[1:]
+
+            if title in ['Minor Injuries', 'Moderate Injuries', 'Major Injuries']:
+                title = 'Injuries'
+
             form_df.loc[form_df['Name'] == player, title] += 1
 
     return form_df
@@ -144,6 +153,9 @@ include_season_data = True              # This can be True or False (make sure t
 # ---------------------------------------------------------------------------------------------------------------------
 
 stats_to_save = ['health', 'Form', '-Form', 'Kick_Percentage', 'Tries', 'POM_Points', 'Games', 'ReserveGames', 'Goals', 'Total_Score'] + list(GAME_DATA_COLUMNS.keys())
+for stat in ['Minor Injuries', 'Moderate Injuries', 'Major Injuries']:
+    stats_to_save.pop(stats_to_save.index(stat))
+stats_to_save.append('Injuries')
 
 g1 = load_data(cur_rd_dir=current_round_directory, group=GROUP_ONE, season_data=include_season_data)
 g2 = load_data(cur_rd_dir=current_round_directory, group=GROUP_TWO, season_data=include_season_data)
